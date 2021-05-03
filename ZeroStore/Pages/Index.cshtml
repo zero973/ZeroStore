@@ -1,0 +1,37 @@
+﻿@page
+@model IndexModel
+@{
+	ViewData["Title"] = "Приложения";
+}
+
+<div class="text-center">
+	<h1>Приложения</h1><br>
+</div>
+<br>
+<form method="post">
+	<label>Поиск:</label>
+	<select id="SearchType" name="SearchType">
+		<option>Название</option>
+		<option>Жанр</option>
+	</select>
+	<input type="text" name="search" id="Search"/>
+	<input type="submit" value="Найти" />
+</form>
+<br>
+<table class="table" border="1">
+	<tr>
+		<td>Превью</td>
+		<td>Название</td>
+		<td>Жанр</td>
+		<td>Цена</td>
+	</tr>
+	@foreach (var app in Model.Apps)
+	{
+		<tr>
+			<td><img src="~/MyImages/@app.Preview" /></td>
+			<td><a href="App?id=@app.Id">@app.Name</a></td>
+			<td>@app.Genre</td>
+			<td>@app.Cost</td>
+		</tr>
+	}
+</table>

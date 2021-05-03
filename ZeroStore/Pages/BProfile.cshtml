@@ -1,0 +1,15 @@
+﻿@page
+@model ZeroStore.Pages.BProfileModel
+@{
+	
+}
+<form method="post" enctype="multipart/form-data">
+	<input asp-for="Id" type="hidden" />
+	<label>Логин: <input type="text" asp-for="Login" value="@Model._Account.Login" /></label><br>
+	<label>Пароль: <input type="text" asp-for="Password" value="@Model._Account.Password" /></label><br>
+	<label>Никнейм: <input type="text" asp-for="Nick" value="@Model._Account.Nick" /></label><br>
+	<label>E-mail: <input type="text" asp-for="Email" value="@Model._Account.Email" /></label><br>
+	<label for="Image">Image <input type="file" asp-for="UploadedImage" /></label><br>
+	<img src="~/MyImages/@Model.UserImage" alt="User image" />
+	<input type="submit" value="Сохранить" />
+</form>

@@ -1,0 +1,46 @@
+﻿@page
+@model ZeroStore.Pages.AppModel
+@{
+	ViewData["Title"] = Model._App.Name;
+}
+
+<div class="text-center">
+	<h1>@Model._App.Name</h1><br>
+</div>
+<table class="table">
+	<tbody>
+		<tr>
+			<td rowspan="3"><img src="~/MyImages/@Model._App.Picture" /></td>
+			<td>Разработчик: @Model.DeveloperName</td>
+		</tr>
+		<tr>
+			<td>Жанр: @Model._App.Genre</td>
+		</tr>
+		<tr>
+			<td>Цена: @Model._App.Cost</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	Описание: <br>
+	@Model._App.Description
+</p>
+<br>
+<p>
+	DLC:<br>
+	<ol>
+		@foreach (var dlc in Model.DLCs)
+		{
+			<li>@dlc.Name @dlc.Cost руб</li>
+		}
+	</ol>
+</p>
+<br>
+<p>
+	Комментари: <br>
+	@foreach (var comment in Model.Comments)
+	{
+		@comment <br>
+	}
+</p>
+
