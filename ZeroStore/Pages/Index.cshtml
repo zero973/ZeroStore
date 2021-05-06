@@ -28,8 +28,8 @@
 	@foreach (var app in Model.Apps)
 	{
 		<tr>
-			<td><img src="~/MyImages/@app.Preview" /></td>
-			<td><a href="App?id=@app.Id">@app.Name</a></td>
+			<td><img src="@Model.GetImage(app.Preview)" /></td>
+			<td><a asp-page="App" asp-route-id="@app.Id">@app.Name</a></td>
 			<td>@app.Genre</td>
 			<td>@app.Cost</td>
 		</tr>

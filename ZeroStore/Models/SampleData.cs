@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,24 +11,25 @@ namespace ZeroStore.Models
 
         public static void Initialize(ApplicationContext appContext)
         {
+            string pathToImages = Path.Combine("wwwroot", "MyImages");
             if (!appContext.Accounts.Any())
             {
                 List<Account> accounts = new List<Account>();
-                accounts.Add(new Account("USER1", "user1", "-_USER1_-", "user1@mail.ru", "Ava1.png"));
-                accounts.Add(new Account("USER2", "user2", "USER_2", "user2@mail.ru", "Ava2.png"));
+                accounts.Add(new Account("USER1", "user1", "-_USER1_-", "user1@mail.ru", Path.Combine(pathToImages, "Ava1.png")));
+                accounts.Add(new Account("USER2", "user2", "USER_2", "user2@mail.ru", Path.Combine(pathToImages, "Ava2.png")));
                 appContext.Accounts.AddRange(accounts);
 
                 List<Developer> developers = new List<Developer>();
-                developers.Add(new Developer("DEV1", "dev1", "-_DEV1_-", "dev1@mail.ru", "Ava3.png"));
-                developers.Add(new Developer("DEV2", "dev2", "DEV_2", "dev2@mail.ru", "Ava4.png"));
+                developers.Add(new Developer("DEV1", "dev1", "-_DEV1_-", "dev1@mail.ru", Path.Combine(pathToImages, "Ava3.png")));
+                developers.Add(new Developer("DEV2", "dev2", "DEV_2", "dev2@mail.ru", Path.Combine(pathToImages, "Ava4.png")));
                 appContext.Developers.AddRange(developers);
 
                 //Добавить покупки мб
 
-                List<App> apps = new List<App>();
-                apps.Add(new App(1, "Пираты", "Увлекательная игра про пиратов", "Экшен", 1230, "", "PiratePreview.png", "Pirate.png"));
-                apps.Add(new App(1, "MathTime", "Решение примеров за время", "Математика", 1500, "", "MathTimePreview.png", "MathTime.png"));
-                apps.Add(new App(2, "Лабиринт", "Пройди лабиринт до конца. Только 1% справляется с этим", "Экшен", 754, "", "LabirintPreview.png", "Labirint.png"));
+                List<MyApp> apps = new List<MyApp>();
+                apps.Add(new MyApp(1, "Пираты", "Увлекательная игра про пиратов", "Экшен", 1230, "", Path.Combine(pathToImages, "PiratePreview.png"), Path.Combine(pathToImages, "Pirate.png")));
+                apps.Add(new MyApp(1, "MathTime", "Решение примеров за время", "Математика", 1500, "", Path.Combine(pathToImages, "MathTimePreview.png"), Path.Combine(pathToImages, "MathTime.png")));
+                apps.Add(new MyApp(2, "Лабиринт", "Пройди лабиринт до конца. Только 1% справляется с этим", "Экшен", 754, "", Path.Combine(pathToImages, "LabirintPreview.png"), Path.Combine(pathToImages, "Labirint.png")));
                 appContext.Apps.AddRange(apps);
 
                 List<DLC> dLCs = new List<DLC>();

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ZeroStore.Models
 {
-    public class DLC
+    public class DLC: IGood
     {
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int IdApp { get; set; }

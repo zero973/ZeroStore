@@ -15,12 +15,12 @@ namespace ZeroStore.Pages
     public class BProfileModel : PageModel
     {
 
-        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ApplicationContext _context;
 
         public Account _Account;
         public string UserImage;
-        public string FileName;
+
+        public bool IsCanChangeData;
 
         [BindProperty]
         public int Id { get; set; }
@@ -40,9 +40,8 @@ namespace ZeroStore.Pages
         [BindProperty]
         public IFormFile UploadedImage { get; set; }
 
-        public BProfileModel(IWebHostEnvironment environment, ApplicationContext db)
+        public BProfileModel(ApplicationContext db)
         {
-            hostingEnvironment = environment;
             _context = db;
         }
 
@@ -50,13 +49,17 @@ namespace ZeroStore.Pages
         {
             if (id == null)
                 return NotFound();
-
             _Account = await _context.Accounts.FindAsync(id);
-            UserImage = _Account.Avatar;
+            if(_Account == null)
+                return NotFound();
+
+            IsCanChangeData = false;
+            UserImage = GetImage(_Account.Avatar);
             Id = (int)id;
 
-            if (_Account == null)
-                return NotFound();
+            if (Request.Cookies.ContainsKey(Program.USER_TYPE) && Request.Cookies.ContainsKey(Program.USER_ID))
+                if(Request.Cookies[Program.USER_TYPE] == "0" && Request.Cookies[Program.USER_ID] == id+"")
+                    IsCanChangeData = true;
 
             return Page();
         }
@@ -76,12 +79,13 @@ namespace ZeroStore.Pages
                 _Account.Nick = Nick;
             if (!string.IsNullOrWhiteSpace(Email))
                 _Account.Email = Email;
-            if(_Account.Avatar != Path.GetFileName(UploadedImage.FileName))
+            using(var stream = new MemoryStream())
             {
-                _Account.Avatar = GetUniqueName(UploadedImage.FileName);
-                UploadedImage.CopyTo(new FileStream(Path.Combine(hostingEnvironment.WebRootPath, "MyImages"), FileMode.Create));
+                UploadedImage.CopyTo(stream);
+                _Account.Avatar = stream.ToArray();
             }
-            UserImage = UploadedImage.FileName;
+
+            UserImage = GetImage(_Account.Avatar);
 
             _context.Attach(_Account).State = EntityState.Modified;
 
@@ -104,12 +108,24 @@ namespace ZeroStore.Pages
             return Page();
         }
 
-        private string GetUniqueName(string fileName)
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                   + "_" + Guid.NewGuid().ToString().Substring(0, 4)
-                   + Path.GetExtension(fileName);
+            Account account = await _context.Accounts.FindAsync(id);
+            if(account != null)
+            {
+                _context.Accounts.Remove(account);
+                await _context.SaveChangesAsync();
+            }
+
+            Response.Cookies.Delete(Program.USER_TYPE);
+            Response.Cookies.Delete(Program.USER_ID);
+
+            return Redirect(Url.Page("Index"));
+        }
+
+        private string GetImage(byte[] mass)
+        {
+            return $"data:image/gif;base64,{Convert.ToBase64String(mass)}";
         }
 
     }

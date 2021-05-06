@@ -16,7 +16,7 @@ namespace ZeroStore.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly ApplicationContext _context;
 
-        public List<App> Apps { get; set; }
+        public List<MyApp> Apps { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ApplicationContext db)
         {
@@ -38,6 +38,11 @@ namespace ZeroStore.Pages
                 Apps = _context.Apps.Where(x => x.Name.Contains(Search)).ToList();
             else
                 Apps = _context.Apps.Where(x => x.Genre.Contains(Search)).ToList();
+        }
+
+        public string GetImage(byte[] mass)
+        {
+            return $"data:image/gif;base64,{Convert.ToBase64String(mass)}";
         }
 
     }

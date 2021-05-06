@@ -1,0 +1,27 @@
+﻿@page
+@model ZeroStore.Pages.BuyGoodModel
+@{
+	ViewData["Title"] = "Покупка";
+}
+<div class="text-center">
+	<h1>Покупка</h1><br>
+</div>
+<br>
+<form method="post">
+	<table class="table">
+	<tbody>
+		<tr>
+			<td rowspan="3"><img src="@Model.GoodImage" /></td>
+			<td>Название: @Model.Good.Name</td>
+		</tr>
+		<tr>
+			<td>Цена: @Model.Good.Cost</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="submit" value="Купить" asp-route-good_id="@Model.Good.Id" asp-route-type="@Model.GoodType" />
+			</td>
+		</tr>
+	</tbody>
+	</table>
+</form>

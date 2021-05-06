@@ -10,8 +10,8 @@
 <table class="table">
 	<tbody>
 		<tr>
-			<td rowspan="3"><img src="~/MyImages/@Model._App.Picture" /></td>
-			<td>Разработчик: @Model.DeveloperName</td>
+			<td rowspan="3"><img src="@Model.GetImage(Model._App.Picture)" /></td>
+			<td>Разработчик: <a asp-page="DProfile" asp-route-id="@Model._Developer.Id">@Model._Developer.Nick</a></td>
 		</tr>
 		<tr>
 			<td>Жанр: @Model._App.Genre</td>
@@ -26,15 +26,30 @@
 	@Model._App.Description
 </p>
 <br>
-<p>
-	DLC:<br>
-	<ol>
-		@foreach (var dlc in Model.DLCs)
+<form method="post">
+	@if (Model.IsCanBuyGood)
+	{
+		<input type="submit" value="Купить" asp-page-handler="OnPost" asp-route-good_id="@Model._App.Id" asp-route-type="0" />
+		@if (Model.IsAppBought)
 		{
-			<li>@dlc.Name @dlc.Cost руб</li>
+			<p>Вы уже купили это приложение</p>
 		}
-	</ol>
-</p>
+	}
+</form>
+<br>
+<form method="post">
+	<p>
+		DLC:<br>
+		<ol>
+			@foreach (var dlc in Model.DLCs)
+			{
+				<li>
+					@dlc.Name @dlc.Cost руб @if (Model.IsCanBuyGood){ <input type="submit" value="Купить" asp-route-good_id="@dlc.Id" asp-route-type="1"/> }
+				</li>
+			}
+		</ol>
+	</p>
+</form>
 <br>
 <p>
 	Комментари: <br>

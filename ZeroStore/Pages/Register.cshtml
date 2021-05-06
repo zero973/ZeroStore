@@ -1,4 +1,25 @@
-﻿@page
+﻿
+@page
 @model ZeroStore.Pages.RegisterModel
 @{
+
 }
+@if (ViewBag.message != null)
+{
+	<script type="text/javascript">
+          alert( "@(ViewData["Message"])");
+	</script>
+}
+<form method="post" enctype="multipart/form-data">
+	<label>Тип аккаунта: </label>
+	<select asp-for="AccType">
+		<option>Покупатель</option>
+		<option>Разработчик</option>
+	</select><br>
+	<label>Логин: <input type="text" asp-for="Login" /></label><br>
+	<label>Пароль: <input type="text" asp-for="Password" /></label><br>
+	<label>Никнейм: <input type="text" asp-for="Nick" /></label><br>
+	<label>E-mail: <input type="text" asp-for="Email" /></label><br>
+	<label for="Image">Image <input type="file" asp-for="UploadedImage" /></label><br>
+	<input type="submit" value="Создать аккаунт" />
+</form>

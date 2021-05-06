@@ -2,3 +2,50 @@
 @model ZeroStore.Pages.DProfileModel
 @{
 }
+<form method="post" enctype="multipart/form-data">
+	<input asp-for="Id" type="hidden" />
+	@if (Model.IsCanChangeData)
+	{
+		<label>Логин: <input type="text" asp-for="Login" value="@Model._Developer.Login" /></label><br>
+		<label>Пароль: <input type="text" asp-for="Password" value="@Model._Developer.Password" /></label><br>
+	}
+	<label>Никнейм: <input type="text" asp-for="Nick" value="@Model._Developer.Nick" /></label><br>
+	@if (Model.IsCanChangeData)
+	{
+		<label>E-mail: <input type="text" asp-for="Email" value="@Model._Developer.Email" /></label><br>
+		<label for="Image">Image: <input type="file" asp-for="UploadedImage" /></label><br>
+	}
+	<img src="@Model.UserImage" alt="User image" /><br>
+	@if (Model.IsCanChangeData)
+	{
+		<input type="submit" value="Сохранить" />
+	}
+</form>
+<form method="post">
+	@if (Model.IsCanChangeData)
+	{
+		<input type="submit" value="Удалить" asp-page-handler="Delete" asp-route-id="@Model._Developer.Id" />
+	}
+</form>
+<br>
+<div class="text-center">
+	<h2>Приложения этого разработчика</h2><br>
+</div>
+<br>
+<table class="table" border="1">
+	<tr>
+		<td>Превью</td>
+		<td>Название</td>
+		<td>Жанр</td>
+		<td>Цена</td>
+	</tr>
+	@foreach (var app in Model.Apps)
+	{
+		<tr>
+			<td><img src="@Model.GetImage(app.Preview)" /></td>
+			<td><a asp-page="App" asp-route-id="@app.Id">@app.Name</a></td>
+			<td>@app.Genre</td>
+			<td>@app.Cost</td>
+		</tr>
+	}
+</table>

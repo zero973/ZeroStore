@@ -10,6 +10,9 @@ namespace ZeroStore
 {
     public class Program
     {
+
+        public const string USER_TYPE = "USER_TYPE", USER_ID = "USER_ID";
+
         public static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();

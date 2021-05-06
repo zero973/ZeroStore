@@ -1,0 +1,24 @@
+﻿@page
+@model PrivacyModel
+@{
+	ViewData["Title"] = "Разработчики";
+}
+<div class="text-center">
+	<h1>Разработчики</h1><br>
+</div>
+<br>
+<table class="table" border="1">
+	<tr>
+		<td>Картинка</td>
+		<td>Никнейм</td>
+		<td>Кол-во приложений</td>
+	</tr>
+	@foreach (var dev in Model.Developers)
+	{
+		<tr>
+			<td><img src="@Model.GetImage(dev.Avatar)" /></td>
+			<td><a asp-page="DProfile" asp-route-id="@dev.Id">@dev.Nick</a></td>
+			<td>@Model.GetCountOfApps(dev.Id)</td>
+		</tr>
+	}
+</table>

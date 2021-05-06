@@ -15,9 +15,18 @@ namespace ZeroStore.Models
         public string Password { get; set; }
         public string Nick { get; set; }
         public string Email { get; set; }
-        public string Avatar { get; set; }
+        public byte[] Avatar { get; set; }
 
         public Account(string login, string password, string nick, string email, string avatar)
+        {
+            Login = login;
+            Password = password;
+            Nick = nick;
+            Email = email;
+            Avatar = ToByteArray(new System.Drawing.Bitmap(avatar));
+        }
+
+        public Account(string login, string password, string nick, string email, byte[] avatar)
         {
             Login = login;
             Password = password;
@@ -33,6 +42,17 @@ namespace ZeroStore.Models
             Email = email;
             Nick = login;
             Avatar = null;
+        }
+
+        private static byte[] ToByteArray(System.Drawing.Image img)
+        {
+            if (img == null)
+                return new byte[0];
+            using (var ms = new System.IO.MemoryStream())
+            {
+                img.Save(ms, img.RawFormat);
+                return ms.ToArray();
+            }
         }
 
     }

@@ -51,15 +51,6 @@ namespace ZeroStore
 
             app.UseAuthorization();
 
-            
-            app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot", "MyImages")),
-                RequestPath = new PathString("/MyImages")
-            });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
